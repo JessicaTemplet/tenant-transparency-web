@@ -47,11 +47,11 @@ const NEWS = [
   },
   {
     tag: 'Rights',
-    title: 'Five lease clauses landlords hope you skip',
-    date: 'Jul 2026',
-    href: null,
-    image: null,
-    imageAlt: null,
+    title: 'Chicago Renters: Your Landlord May Have Fixed Your Rent. Here\'s What You\'re Owed.',
+    date: 'Aug 2026',
+    href: '/chicago-class-action-realpages/realpage-chicago-renters-guide.html',
+    image: '/chicago-class-action-realpages/settlement.png',
+    imageAlt: 'Illinois Attorney General Kwame Raoul at a press conference announcing Illinois joins the DOJ lawsuit against RealPage rent-fixing defendants',
   },
 ]
 
@@ -303,6 +303,49 @@ export default function Homepage() {
         </div>
       </section>
 
+      {/* ── Housing News ── */}
+      <section className="news-section" id="housing-news">
+        <div className="news-section-inner">
+          <div className="section-header">
+            <div>
+              <span className="section-eyebrow">Housing News</span>
+              <h2>What renters need to know.</h2>
+            </div>
+            <a href={WAITLIST_URL} target="_blank" rel="noopener noreferrer" className="cta-ghost">
+              Get updates &rarr;
+            </a>
+          </div>
+          <div className="news-grid">
+            {NEWS.map((n) => (
+              n.href
+                ? (
+                  <a key={n.title} href={n.href} className="news-card">
+                    {n.image
+                      ? <img src={n.image} alt={n.imageAlt} className="news-card-image" style={{ width: '100%', height: '160px', objectFit: 'cover', display: 'block' }} />
+                      : <div className="news-card-image">Article image</div>
+                    }
+                    <div className="news-card-body">
+                      <div className="news-card-tag">{n.tag}</div>
+                      <h3>{n.title}</h3>
+                      <div className="news-card-date">{n.date}</div>
+                    </div>
+                  </a>
+                )
+                : (
+                  <a key={n.title} href={WAITLIST_URL} target="_blank" rel="noopener noreferrer" className="news-card">
+                    <div className="news-card-image">Article image</div>
+                    <div className="news-card-body">
+                      <div className="news-card-tag">{n.tag}</div>
+                      <h3>{n.title}</h3>
+                      <div className="news-card-date">{n.date}</div>
+                    </div>
+                  </a>
+                )
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── Resource Center ── */}
       <section className="resource-section" id="resource-center">
         <div className="resource-section-inner">
@@ -375,49 +418,6 @@ export default function Homepage() {
                   <span>{v.location}</span>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Housing News ── */}
-      <section className="news-section" id="housing-news">
-        <div className="news-section-inner">
-          <div className="section-header">
-            <div>
-              <span className="section-eyebrow">Housing News</span>
-              <h2>What renters need to know.</h2>
-            </div>
-            <a href={WAITLIST_URL} target="_blank" rel="noopener noreferrer" className="cta-ghost">
-              Get updates &rarr;
-            </a>
-          </div>
-          <div className="news-grid">
-            {NEWS.map((n) => (
-              n.href
-                ? (
-                  <a key={n.title} href={n.href} className="news-card">
-                    {n.image
-                      ? <img src={n.image} alt={n.imageAlt} className="news-card-image" style={{ width: '100%', height: '160px', objectFit: 'cover', display: 'block' }} />
-                      : <div className="news-card-image">Article image</div>
-                    }
-                    <div className="news-card-body">
-                      <div className="news-card-tag">{n.tag}</div>
-                      <h3>{n.title}</h3>
-                      <div className="news-card-date">{n.date}</div>
-                    </div>
-                  </a>
-                )
-                : (
-                  <a key={n.title} href={WAITLIST_URL} target="_blank" rel="noopener noreferrer" className="news-card">
-                    <div className="news-card-image">Article image</div>
-                    <div className="news-card-body">
-                      <div className="news-card-tag">{n.tag}</div>
-                      <h3>{n.title}</h3>
-                      <div className="news-card-date">{n.date}</div>
-                    </div>
-                  </a>
-                )
             ))}
           </div>
         </div>
