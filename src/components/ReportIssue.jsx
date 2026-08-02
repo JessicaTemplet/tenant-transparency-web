@@ -1,0 +1,303 @@
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { submitReport } from '../api.js'
+import { getReporterId } from '../reporterId.js'
+
+const CATEGORY_TAGS = [
+  { value: 'security_deposit',  label: 'Security Deposit' },
+  { value: 'habitability',      label: 'Habitability / Repairs' },
+  { value: 'heat_utilities',    label: 'Heat & Utilities' },
+  { value: 'eviction',          label: 'Eviction' },
+  { value: 'harassment',        label: 'Harassment' },
+  { value: 'lease_violation',   label: 'Lease Violation' },
+  { value: 'other',             label: 'Other' },
+]
+
+const RESOLUTION_STATUSES = [
+  { value: 'unresolved',        label: 'Unresolved' },
+  { value: 'resolved_landlord', label: 'Resolved with landlord' },
+  { value: 'resolved_legal',    label: 'Resolved through legal action' },
+  { value: 'ongoing',           label: 'Ongoing' },
+]
+
+export default function ReportIssue() {
+  const [submittedAddress, setSubmittedAddress] = useState('')
+
+  const [sentiment, setSentiment] = useState('negative')
+  const [tags, setTags] = useState([])
+  const [description, setDescription] = useState('')
+  const [incidentDate, setIncidentDate] = useState('')
+  const [reportedToCity, setReportedToCity] = useState(false)
+  const [cityCaseNumber, setCityCaseNumber] = useState('')
+  const [resolutionStatus, setResolutionStatus] = useState('unresolved')
+  const [wouldRentAgain, setWouldRentAgain] = useState('')
+
+  const [submitStatus, setSubmitStatus] = useState('idle')
+  const [submitError, setSubmitError] = useState('')
+  // 'resolved' | 'pending_address' — set after a successful submit
+  const [confirmationType, setConfirmationType] = useState(null)
+
+  function toggleTag(value) {
+    setTags((prev) =>
+      prev.includes(value) ? prev.filter((t) => t !== value) : [...prev, value]
+    )
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+
+    if (submittedAddress.trim().length < 5) {
+      setSubmitStatus('error')
+      setSubmitError('Please enter a full street address.')
+      return
+    }
+    if (tags.length === 0) {
+      setSubmitStatus('error')
+      setSubmitError('Select at least one issue category.')
+      return
+    }
+    if (description.trim().length < 50) {
+      setSubmitStatus('error')
+      setSubmitError(
+        `Description needs at least 50 characters (${description.trim().length} so far).`
+      )
+      return
+    }
+    if (!incidentDate) {
+      setSubmitStatus('error')
+      setSubmitError('Incident date is required.')
+      return
+    }
+
+    setSubmitStatus('loading')
+    setSubmitError('')
+
+    try {
+      const result = await submitReport({
+        submitted_address: submittedAddress.trim(),
+        entity_id: null,
+        reporter_id: getReporterId(),
+        report_sentiment: sentiment,
+        category_tags: tags,
+        description: description.trim(),
+        incident_date: incidentDate,
+        reported_to_city: reportedToCity,
+        city_case_number: reportedToCity && cityCaseNumber.trim() ? cityCaseNumber.trim() : null,
+        resolution_status: resolutionStatus,
+        would_rent_again: wouldRentAgain === '' ? null : wouldRentAgain === 'yes',
+        evidence_file_refs: null,
+      })
+      // 201 = address matched a known property; 202 = saved but pending
+      setConfirmationType(result._status === 202 ? 'pending_address' : 'resolved')
+      setSubmitStatus('done')
+    } catch (err) {
+      setSubmitStatus('error')
+      setSubmitError(err.message)
+    }
+  }
+
+  if (submitStatus === 'done' && confirmationType === 'resolved') {
+    return (
+      <div className="report-panel">
+        <div className="report-success">
+          <div className="report-success-icon">&#10003;</div>
+          <h1>Report submitted</h1>
+          <p>
+            Thank you for helping keep Chicago renters informed. Your report
+            goes through moderation and PII review before it appears publicly
+            &mdash; usually within 48 hours.
+          </p>
+          <p>
+            Reports are completely anonymous. No personal information from
+            your submission will ever appear on the property page.
+          </p>
+          <div className="report-success-actions">
+            <Link to="/search" className="cta-primary">Search another property</Link>
+            <Link to="/resources" className="cta-ghost">Read tenant rights guides</Link>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (submitStatus === 'done' && confirmationType === 'pending_address') {
+    return (
+      <div className="report-panel">
+        <div className="report-success">
+          <div className="report-success-icon">&#10003;</div>
+          <h1>Report received</h1>
+          <p>
+            Your report has been saved. The address you provided
+            &mdash; <strong>{submittedAddress}</strong> &mdash; is not yet
+            in our database, so our team will verify it before the report
+            goes live. This usually takes a little longer than a standard
+            review: up to a few business days.
+          </p>
+          <p>
+            Everything else about your submission is already in the moderation
+            queue. No action needed on your end.
+          </p>
+          <p>
+            Reports are completely anonymous. No personal information from
+            your submission will ever appear publicly.
+          </p>
+          <div className="report-success-actions">
+            <Link to="/search" className="cta-primary">Search properties</Link>
+            <Link to="/resources" className="cta-ghost">Read tenant rights guides</Link>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="report-panel">
+      <div className="report-panel-header">
+        <h1>Report an Issue</h1>
+        <p className="subhead">
+          Tell us what happened at a specific address. Reports are
+          anonymous and reviewed before they go live &mdash; no account required.
+        </p>
+        <div className="report-privacy-note">
+          <span>&#128274;</span>
+          Your identity is never stored or shared. We strip all personally
+          identifiable information before your report is saved.
+        </div>
+      </div>
+
+      <form className="report-form" onSubmit={handleSubmit} noValidate>
+        <label className="field-label">
+          Property address
+          <span className="field-hint">
+            Enter the full street address. If it is not in our database yet,
+            we will verify it after you submit.
+          </span>
+          <input
+            type="text"
+            placeholder="e.g. 123 N Main St, Chicago, IL"
+            value={submittedAddress}
+            onChange={(e) => setSubmittedAddress(e.target.value)}
+            aria-label="Property address"
+            autoFocus
+          />
+        </label>
+
+        <label className="field-label">
+          Overall experience
+          <select value={sentiment} onChange={(e) => setSentiment(e.target.value)}>
+            <option value="negative">Negative</option>
+            <option value="neutral">Neutral</option>
+            <option value="positive">Positive</option>
+          </select>
+        </label>
+
+        <div className="field-label">
+          Issue category
+          <span className="field-hint">Select all that apply</span>
+          <div className="tag-checkbox-list">
+            {CATEGORY_TAGS.map((t) => (
+              <label key={t.value} className="tag-checkbox">
+                <input
+                  type="checkbox"
+                  checked={tags.includes(t.value)}
+                  onChange={() => toggleTag(t.value)}
+                />
+                {t.label}
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <label className="field-label">
+          What happened?
+          <span className="field-hint">
+            Minimum 50 characters &mdash; {description.trim().length < 50
+              ? `${50 - description.trim().length} more needed`
+              : '\u2713 good to go'}
+          </span>
+          <textarea
+            rows={6}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Describe the issue in your own words. What happened, when, and how did it affect you? The more detail, the more useful your report is to other renters."
+          />
+        </label>
+
+        <label className="field-label">
+          When did this happen?
+          <input
+            type="date"
+            value={incidentDate}
+            onChange={(e) => setIncidentDate(e.target.value)}
+            max={new Date().toISOString().split('T')[0]}
+          />
+        </label>
+
+        <label className="field-label">
+          Current status
+          <select
+            value={resolutionStatus}
+            onChange={(e) => setResolutionStatus(e.target.value)}
+          >
+            {RESOLUTION_STATUSES.map((r) => (
+              <option key={r.value} value={r.value}>{r.label}</option>
+            ))}
+          </select>
+        </label>
+
+        <label className="field-label">
+          Would you rent here again?
+          <select
+            value={wouldRentAgain}
+            onChange={(e) => setWouldRentAgain(e.target.value)}
+          >
+            <option value="">Prefer not to say</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </label>
+
+        <label className="field-checkbox">
+          <input
+            type="checkbox"
+            checked={reportedToCity}
+            onChange={(e) => setReportedToCity(e.target.checked)}
+          />
+          I also reported this to the City of Chicago
+        </label>
+
+        {reportedToCity && (
+          <label className="field-label">
+            City case number
+            <span className="field-hint">Optional &mdash; helps us cross-reference public records</span>
+            <input
+              type="text"
+              value={cityCaseNumber}
+              onChange={(e) => setCityCaseNumber(e.target.value)}
+              placeholder="e.g. 24-000123"
+            />
+          </label>
+        )}
+
+        {submitStatus === 'error' && (
+          <p className="status-line error">{submitError}</p>
+        )}
+
+        <button
+          type="submit"
+          className="cta-primary"
+          disabled={submitStatus === 'loading'}
+          style={{ alignSelf: 'flex-start' }}
+        >
+          {submitStatus === 'loading' ? 'Submitting\u2026' : 'Submit Report'}
+        </button>
+
+        <p className="report-disclaimer">
+          By submitting, you confirm this is an honest account of your
+          experience. False reports violate our{' '}
+          <Link to="/terms">Terms of Use</Link>.
+        </p>
+      </form>
+    </div>
+  )
+}
