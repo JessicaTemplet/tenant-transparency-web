@@ -18,7 +18,7 @@ const STATIC_ARTICLE_SLUGS = [
 export default defineConfig({
   // Served at https://<user>.github.io/tenant-transparency-web/ by default.
   // If/when a custom domain is attached via a CNAME file, change this back to '/'.
-  base: process.env.VITE_BASE_PATH || '/tenant-transparency-web/',
+  base: '/', // served from tenanttransparency.com (custom domain), not a /repo-name/ subpath
   plugins: [
     react(),
     {
