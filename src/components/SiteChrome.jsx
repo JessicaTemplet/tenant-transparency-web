@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import Logo from './Logo.jsx'
 
 const WAITLIST_URL = 'https://forms.office.com/r/KDtrZz26ga'
 
@@ -20,11 +21,7 @@ export default function SiteChrome({ children, hideFooter = false }) {
       <header className="app-header">
         <div className="header-inner">
           <Link to="/" className="brand-link" onClick={() => setMenuOpen(false)}>
-            <img
-              src="/logo.png"
-              alt="Tenant Transparency — Know Before You Lease"
-              className="brand-logo"
-            />
+            <Logo className="brand-logo" />
           </Link>
 
           <nav className="main-nav" aria-label="Primary navigation">
@@ -84,7 +81,7 @@ export default function SiteChrome({ children, hideFooter = false }) {
         <footer className="site-footer" role="contentinfo">
           <div className="footer-inner">
             <div className="footer-brand">
-              <img src="/logo.png" alt="Tenant Transparency" className="footer-logo" />
+              <Logo className="footer-logo" />
               <p>
                 Founded in Chicago. Building a future where housing transparency
                 is the standard and every renter knows before they lease.
