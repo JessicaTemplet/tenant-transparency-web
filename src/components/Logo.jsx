@@ -1,14 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-// Animated canvas wordmark (house collapses into "TENANT" / "TRANSPARENCY").
-// Ported 1:1 from the original vanilla-JS build (v32.html) — same constants,
-// function names, and phase timings, so the math and animation stay identical.
-//
-// className controls the DISPLAYED size (matches how the old <img className="brand-logo" />
-// / <img className="footer-logo" /> worked) — the canvas keeps its native 660x300
-// internal resolution via the width/height attributes below so the drawing math
-// never has to change, only the CSS scales it down.
-const Logo = ({ className = 'brand-logo' }) => {
+const Logo = () => {
     const canvasRef = useRef(null);
     const rafIdRef = useRef(null);
     const startTimeRef = useRef(null);
@@ -24,7 +16,7 @@ const Logo = ({ className = 'brand-logo' }) => {
         const NAVY = '#0B2265';
         const ORANGE = '#C83803';
 
-        const FONT_SIZE = 28;
+        const FONT_SIZE = 34;
         const FONT_WEIGHT = '700';
         const FONT_SPACING = 3;
         const FONT_STR = `${FONT_WEIGHT} ${FONT_SIZE}px Georgia, 'Times New Roman', serif`;
@@ -164,11 +156,11 @@ const Logo = ({ className = 'brand-logo' }) => {
             const T2_x = blockLeft;
             const T1_cx = T1_x + Tw / 2;
             const T2_cx = T2_x + Tw / 2;
-            const T1_baseY = H / 2 - rowGap / 2 - 20;
+            const T1_baseY = H / 2 - rowGap / 2 - 24;
             const T2_baseY = T1_baseY + rowGap;
             const T1_topY = T1_baseY - capH;
             const T2_topY = T2_baseY - capH;
-            const pad = 24;
+            const pad = 29;
             const hL = blockLeft - pad;
             const hR = blockLeft + transW + pad;
             const hBot = T2_baseY + pad * 1.5;
@@ -258,7 +250,7 @@ const Logo = ({ className = 'brand-logo' }) => {
 
             if (T >= 5.75) {
                 const finalAlpha = easeOut(rng(T, 5.75, 6.55));
-                drawHouse(hL, hR, hEave, hBot, hPeakX, hPeakY, 4, finalAlpha);
+                drawHouse(hL, hR, hEave, hBot, hPeakX, hPeakY, 6, finalAlpha);
             }
 
             if (T < 7.05) {
@@ -268,27 +260,28 @@ const Logo = ({ className = 'brand-logo' }) => {
 
         const initAnimation = () => {
             if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
-            startTimeRef.current = null;
-            L = null;
-            ctx.clearRect(0, 0, W, H);
-            rafIdRef.current = requestAnimationFrame(draw);
-        };
-        initAnimation();
-        return () => {
-            if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
-        };
-    }, []);
-
-    return (
-        <canvas
-            ref={canvasRef}
-            width={660}
-            height={300}
-            className={className}
-            role="img"
-            aria-label="Tenant Transparency — Know Before You Lease"
-        />
-    );
+startTimeRef.current = null;
+L = null;
+ctx.clearRect(0, 0, W, H);
+rafIdRef.current = requestAnimationFrame(draw);
+};
+initAnimation();
+return () => {
+if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+};}, []);
+return (
+<canvas
+ref={canvasRef}
+width={660}
+height={360}
+style={{
+display: 'block',
+width: '264px',
+height: '144px',
+imageRendering: 'crisp-edges',
+}}
+/>
+);
 };
 
 export default Logo;
