@@ -276,8 +276,8 @@ width={660}
 height={360}
 style={{
 display: 'block',
-width: '264px',
-height: '144px',
+width: '238px',
+height: '130px',
 imageRendering: 'crisp-edges',
 }}
 />
