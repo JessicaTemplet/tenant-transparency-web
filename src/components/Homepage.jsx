@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { submitNewsletterSignup } from '../api.js'
 // Link is used in neighborhood chips, voices CTA, resource cards, and footer CTAs
-
-const WAITLIST_URL = 'https://forms.office.com/r/KDtrZz26ga'
 
 const NEIGHBORHOODS = [
   'Lakeview', 'Pilsen', 'Hyde Park', 'Logan Square',
@@ -102,6 +101,8 @@ export default function Homepage() {
   const [heroQuery, setHeroQuery] = useState('')
   const [email, setEmail] = useState('')
   const [emailSubmitted, setEmailSubmitted] = useState(false)
+  const [signupStatus, setSignupStatus] = useState('idle')
+  const [signupError, setSignupError] = useState('')
   const navigate = useNavigate()
 
   function handleHeroSearch(e) {
@@ -110,12 +111,19 @@ export default function Homepage() {
     navigate(q.length >= 3 ? `/search?q=${encodeURIComponent(q)}` : '/search')
   }
 
-  function handleEmailSignup(e) {
+  async function handleEmailSignup(e) {
     e.preventDefault()
-    // Redirect to the waitlist form — real email capture can replace this
-    // when the newsletter backend is set up (Phase 1).
-    window.open(WAITLIST_URL, '_blank', 'noopener,noreferrer')
-    setEmailSubmitted(true)
+    if (!email.trim()) return
+    setSignupStatus('loading')
+    setSignupError('')
+    try {
+      await submitNewsletterSignup({ email: email.trim() })
+      setEmailSubmitted(true)
+      setSignupStatus('done')
+    } catch (err) {
+      setSignupStatus('error')
+      setSignupError(err.message)
+    }
   }
 
   return (
@@ -159,7 +167,7 @@ export default function Homepage() {
 
           <div className="hero-ctas">
             <Link to="/report-issue" className="cta-secondary">Report a Concern</Link>
-            <a href={WAITLIST_URL} target="_blank" rel="noopener noreferrer" className="cta-ghost">
+            <a href="#join-movement" className="cta-ghost">
               Join the Movement &rarr;
             </a>
           </div>
@@ -296,7 +304,7 @@ export default function Homepage() {
               <li>Landlord responsiveness history</li>
               <li>Ownership transparency and LLC chain resolution</li>
             </ul>
-            <a href={WAITLIST_URL} target="_blank" rel="noopener noreferrer" className="cta-primary">
+            <a href="#join-movement" className="cta-primary">
               Get notified at launch
             </a>
           </div>
@@ -311,7 +319,7 @@ export default function Homepage() {
               <span className="section-eyebrow">Housing News</span>
               <h2>What renters need to know.</h2>
             </div>
-            <a href={WAITLIST_URL} target="_blank" rel="noopener noreferrer" className="cta-ghost">
+            <a href="#join-movement" className="cta-ghost">
               Get updates &rarr;
             </a>
           </div>
@@ -332,7 +340,7 @@ export default function Homepage() {
                   </a>
                 )
                 : (
-                  <a key={n.title} href={WAITLIST_URL} target="_blank" rel="noopener noreferrer" className="news-card">
+                  <a key={n.title} href="#join-movement" className="news-card">
                     <div className="news-card-image">Article image</div>
                     <div className="news-card-body">
                       <div className="news-card-tag">{n.tag}</div>
@@ -434,7 +442,7 @@ export default function Homepage() {
               currently have &mdash; aggregated, anonymized, and built on
               verified public records.
             </p>
-            <a href={WAITLIST_URL} target="_blank" rel="noopener noreferrer" className="cta-secondary">
+            <a href="#join-movement" className="cta-secondary">
               Join the waitlist
             </a>
           </div>
@@ -467,7 +475,7 @@ export default function Homepage() {
           </p>
           {emailSubmitted ? (
             <p style={{ color: 'rgba(255,255,255,0.9)', fontWeight: 600 }}>
-              Thanks &mdash; check your inbox for next steps.
+              Thanks &mdash; you're on the list.
             </p>
           ) : (
             <form className="join-form" onSubmit={handleEmailSignup}>
@@ -479,8 +487,13 @@ export default function Homepage() {
                 aria-label="Email address"
                 required
               />
-              <button type="submit">Sign Up</button>
+              <button type="submit" disabled={signupStatus === 'loading'}>
+                {signupStatus === 'loading' ? 'Signing up…' : 'Sign Up'}
+              </button>
             </form>
+          )}
+          {signupStatus === 'error' && (
+            <p className="status-line error" style={{ marginTop: '12px' }}>{signupError}</p>
           )}
         </div>
       </section>

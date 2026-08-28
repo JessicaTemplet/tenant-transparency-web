@@ -57,3 +57,7 @@ export function submitBetaFeedback(payload) {
 export function submitFoundingCommunityResponse(payload) {
   return postJson('/api/founding-community', payload)
 }
+
+export function submitNewsletterSignup(payload) {
+  return postJson('/api/newsletter-signup', payload)
+}

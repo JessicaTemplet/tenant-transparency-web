@@ -271,11 +271,17 @@ img { display: block; max-width: 100%; }
   box-shadow: var(--shadow-sm);
 }
 
+/* Keeps in-page anchor targets (e.g. /about#contact, /#housing-news) from
+   landing underneath the sticky header when jumped to. */
+section[id] {
+  scroll-margin-top: 96px;
+}
+
 .header-inner {
   max-width: var(--content-wide);
   margin: 0 auto;
   padding: 0 var(--section-pad-x);
-  height: 72px;
+  height: 84px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -289,7 +295,7 @@ img { display: block; max-width: 100%; }
 }
 
 .brand-logo {
-  height: 64px;
+  height: 78px;
   width: auto;
   display: block;
 }
@@ -416,7 +422,7 @@ img { display: block; max-width: 100%; }
 }
 
 .footer-logo {
-  height: 44px;
+  height: 54px;
   width: auto;
   /* invert logo to white for dark footer */
   filter: brightness(0) invert(1);
@@ -2084,11 +2090,11 @@ img { display: block; max-width: 100%; }
 @media (max-width: 680px) {
   .header-inner {
     padding: 0 var(--space-5);
-    height: 60px;
+    height: 68px;
   }
 
   .brand-logo {
-    height: 48px;
+    height: 56px;
   }
 
   .main-nav {

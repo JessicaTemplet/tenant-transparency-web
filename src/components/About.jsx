@@ -1,7 +1,5 @@
 import { Link } from 'react-router-dom'
 
-const WAITLIST_URL = 'https://forms.office.com/r/KDtrZz26ga'
-
 const PHASES = [
   {
     label: 'Phase 1 — Live Now',
@@ -52,9 +50,9 @@ export default function About() {
           </p>
           <div style={{ display: 'flex', gap: '12px', marginTop: '24px', flexWrap: 'wrap' }}>
             <Link to="/search" className="cta-primary">Search Properties</Link>
-            <a href={WAITLIST_URL} target="_blank" rel="noopener noreferrer" className="cta-secondary">
+            <Link to="/#join-movement" className="cta-secondary">
               Join the Movement
-            </a>
+            </Link>
           </div>
         </div>
         <div style={{ background: 'var(--bg-warm)', borderRadius: 'var(--radius-xl)', padding: '40px', border: '1px solid var(--border)' }}>
@@ -150,7 +148,7 @@ export default function About() {
         </div>
       </section>
 
-      <section style={{ background: 'var(--teal)', borderRadius: 'var(--radius-xl)', padding: 'var(--space-12)', textAlign: 'center' }}>
+      <section id="contact" style={{ background: 'var(--teal)', borderRadius: 'var(--radius-xl)', padding: 'var(--space-12)', textAlign: 'center' }}>
         <h2 style={{ color: 'var(--white)', marginBottom: 'var(--space-3)' }}>Get in touch</h2>
         <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 'var(--text-md)', marginBottom: 'var(--space-6)' }}>
           Questions, partnerships, press inquiries, or feedback — we want to hear from you.

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { submitBetaFeedback } from '../api.js'
-import Logo from './Logo.jsx'
+import ImageLoop from './ImageLoop.jsx'
+import '../support.css'
 
 const RESPONDENT_TYPES = [
   { value: 'current_renter',       label: 'Current renter' },
@@ -101,33 +102,26 @@ export default function BetaTester() {
   }
 
   return (
-    <div className="site-chrome">
-      <header className="app-header">
-        <div className="header-inner">
-          <a href="/" className="brand-link">
-            <Logo className="brand-logo" />
-          </a>
-        </div>
-      </header>
-
-      <main className="app-main page-content">
-        {status === 'done' ? (
-          <div className="report-panel">
-            <div className="report-success">
-              <div className="report-success-icon">&#10003;</div>
-              <h1>Thank you</h1>
-              <p>
-                Your feedback has been recorded. This is exactly the kind of
-                honest, unfiltered read we need before opening this up more
-                broadly &mdash; we really appreciate the time.
-              </p>
-            </div>
+    <>
+      {status === 'done' ? (
+        <div className="report-panel">
+          <div className="report-success">
+            <div className="report-success-icon">&#10003;</div>
+            <h1>Thank you</h1>
+            <p>
+              Your feedback has been recorded. This is exactly the kind of
+              honest, unfiltered read we need before opening this up more
+              broadly &mdash; we really appreciate the time.
+            </p>
           </div>
-        ) : (
-          <div className="report-panel">
-            <div className="report-panel-header">
+        </div>
+      ) : (
+        <>
+          <section className="support-hero" style={{ marginBottom: 'var(--space-10)' }}>
+            <div className="support-hero-content">
+              <span className="section-eyebrow">Beta Testing</span>
               <h1>Help Us Build Tenant Transparency</h1>
-              <p className="subhead">
+              <p>
                 Tenant Transparency is a renter-focused platform built
                 around one simple idea: renters should be able to know more
                 before they sign a lease.
@@ -154,7 +148,10 @@ export default function BetaTester() {
                 for, and how to use it without us explaining it first.
               </div>
             </div>
+            <ImageLoop />
+          </section>
 
+          <div className="report-panel">
             <form className="report-form" onSubmit={handleSubmit} noValidate>
               <label className="field-label">
                 Name
@@ -326,8 +323,8 @@ export default function BetaTester() {
               </button>
             </form>
           </div>
-        )}
-      </main>
-    </div>
+        </>
+      )}
+    </>
   )
 }

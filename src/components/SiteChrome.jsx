@@ -37,16 +37,15 @@ export default function SiteChrome({ children, hideFooter = false }) {
             <Link to="/report-issue" className="cta-primary" style={{ padding: '9px 18px', fontSize: '0.85rem' }}>
               Report a Concern
             </Link>
-            <a
+            <Link
               className="header-icon-btn"
-              href={WAITLIST_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+              to="/#join-movement"
               aria-label="Get notified — join the waitlist"
               title="Get notified"
+              onClick={() => setMenuOpen(false)}
             >
               🔔
-            </a>
+            </Link>
             <button
               className="header-icon-btn menu-toggle"
               aria-label={menuOpen ? 'Close menu' : 'Open menu'}
@@ -99,7 +98,7 @@ export default function SiteChrome({ children, hideFooter = false }) {
             <div className="footer-col">
               <h4>Company</h4>
               <Link to="/about">About</Link>
-              <a href="mailto:info@tenanttransparency.com">Contact</a>
+              <Link to="/about#contact">Contact</Link>
               <a href="mailto:info@tenanttransparency.com">Partners</a>
               <a href="/#housing-news">Housing News</a>
               <a href="/#research-data">Research</a>
@@ -112,7 +111,7 @@ export default function SiteChrome({ children, hideFooter = false }) {
             <div className="footer-legal-links">
               <Link to="/privacy">Privacy Policy</Link>
               <Link to="/terms">Terms of Use</Link>
-              <a href="mailto:info@tenanttransparency.com">Contact</a>
+              <Link to="/about#contact">Contact</Link>
             </div>
           </div>
         </footer>

@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom'
 import Homepage from './components/Homepage.jsx'
 import PropertySearch from './components/PropertySearch.jsx'
 import PropertyDetail from './components/PropertyDetail.jsx'
@@ -15,6 +15,24 @@ import PrivacyPolicy from './components/PrivacyPolicy.jsx'
 import TermsOfUse from './components/TermsOfUse.jsx'
 import AdminApp from './AdminApp.jsx'
 
+// Handles in-app anchor links (e.g. /about#contact, /#housing-news) since
+// react-router doesn't scroll to a hash target on its own the way a plain
+// <a> would. Plain top-of-page scroll on hash-less navigations too.
+function ScrollToHash() {
+  const location = useLocation()
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.slice(1)
+      requestAnimationFrame(() => {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      })
+    } else {
+      window.scrollTo(0, 0)
+    }
+  }, [location.pathname, location.hash])
+  return null
+}
+
 function RenterSearchFlow() {
   const [selectedPropertyId, setSelectedPropertyId] = useState(null)
 
@@ -27,12 +45,14 @@ function RenterSearchFlow() {
 
 // "/" and all public-facing routes get full site chrome (nav + footer).
 // "/admin" is deliberately bare — it's a back-office tool, not a renter page.
-// "/beta" and "/founding-community" are also deliberately bare (own minimal
-// header, no SiteChrome) — direct-link-only pages Sheenita asked NOT to put
-// in the main navigation.
+// "/beta" and "/founding-community" get full site chrome too (so someone
+// filling them out can jump back to the rest of the site if they need to
+// recheck something) but stay direct-link-only — Sheenita asked that they
+// not appear as links anywhere in the main navigation itself.
 export default function App() {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
+      <ScrollToHash />
       <Routes>
         <Route path="/" element={<SiteChrome><Homepage /></SiteChrome>} />
         <Route path="/search" element={<SiteChrome><div className="page-content"><RenterSearchFlow /></div></SiteChrome>} />
@@ -43,8 +63,8 @@ export default function App() {
         <Route path="/map" element={<SiteChrome hideFooter><NeighborhoodMap /></SiteChrome>} />
         <Route path="/privacy" element={<SiteChrome><PrivacyPolicy /></SiteChrome>} />
         <Route path="/terms" element={<SiteChrome><TermsOfUse /></SiteChrome>} />
-        <Route path="/beta" element={<BetaTester />} />
-        <Route path="/founding-community" element={<FoundingCommunity />} />
+        <Route path="/beta" element={<SiteChrome><div className="page-content"><BetaTester /></div></SiteChrome>} />
+        <Route path="/founding-community" element={<SiteChrome><div className="page-content"><FoundingCommunity /></div></SiteChrome>} />
         <Route
           path="/admin"
           element={
