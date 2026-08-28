@@ -14,6 +14,20 @@ async function request(path) {
   return res.json()
 }
 
+async function postJson(path, payload) {
+  const res = await fetch(`${API_BASE}${path}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+  if (!res.ok) {
+    const body = await res.text().catch(() => '')
+    throw new Error(`${res.status} ${res.statusText}${body ? `: ${body}` : ''}`)
+  }
+  const data = await res.json()
+  return { ...data, _status: res.status }
+}
+
 export function searchProperties(query) {
   return request(`/api/properties/search?q=${encodeURIComponent(query)}`)
 }
@@ -31,17 +45,15 @@ export function getCommunityAreaStats() {
 }
 
 export async function submitReport(payload) {
-  const res = await fetch(`${API_BASE}/api/reports`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  })
-  if (!res.ok) {
-    const body = await res.text().catch(() => '')
-    throw new Error(`${res.status} ${res.statusText}${body ? `: ${body}` : ''}`)
-  }
-  const data = await res.json()
-  // Surface the status code so callers can distinguish 201 (resolved) from
+  // Surfaces the status code so callers can distinguish 201 (resolved) from
   // 202 (saved but address is pending admin verification).
-  return { ...data, _status: res.status }
+  return postJson('/api/reports', payload)
+}
+
+export function submitBetaFeedback(payload) {
+  return postJson('/api/beta-feedback', payload)
+}
+
+export function submitFoundingCommunityResponse(payload) {
+  return postJson('/api/founding-community', payload)
 }
