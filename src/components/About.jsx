@@ -158,6 +158,11 @@ export default function About() {
         <a href="mailto:info@tenanttransparency.com" className="cta-secondary">
           info@tenanttransparency.com
         </a>
+        <address style={{ marginTop: 'var(--space-6)', color: 'rgba(255,255,255,0.8)', fontSize: 'var(--text-sm)', fontStyle: 'normal', lineHeight: 1.6 }}>
+          Tenant Transparency<br />
+          1 E Erie St, Suite 525-3114<br />
+          Chicago, IL 60611
+        </address>
       </section>
 
     </div>
