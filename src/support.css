@@ -1,0 +1,110 @@
+.support-page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: var(--space-16) var(--space-6);
+}
+
+.support-hero {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: var(--space-12);
+  align-items: center;
+}
+
+@media (max-width: 860px) {
+  .support-hero {
+    grid-template-columns: 1fr;
+  }
+}
+
+.support-hero-content h1 {
+  font-size: var(--text-2xl);
+  margin: var(--space-3) 0 var(--space-6);
+  color: var(--ink);
+}
+
+.support-hero-content p {
+  color: var(--ink-soft);
+  font-size: var(--text-md);
+  line-height: 1.6;
+  margin-bottom: var(--space-4);
+}
+
+.support-cta-wrap {
+  margin-top: var(--space-6);
+}
+
+.support-cta-disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.support-disclosure {
+  margin-top: var(--space-6);
+  padding: var(--space-4) var(--space-5);
+  background: var(--bg-warm);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.support-disclosure p {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.image-loop {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.image-loop-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+.image-loop-slide.active {
+  opacity: 1;
+}
+
+.image-loop-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: var(--space-6) var(--space-5);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0));
+  color: var(--white);
+  font-size: var(--text-md);
+  font-weight: 600;
+}
+
+.image-loop-dots {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  display: flex;
+  gap: 6px;
+}
+
+.image-loop-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  padding: 0;
+}
+
+.image-loop-dot.active {
+  background: var(--white);
+}
