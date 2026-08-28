@@ -9,17 +9,17 @@ const STRIPE_PAYMENT_LINK = ''
 
 const LOOP_IMAGES = [
   {
-    src: '/signinglease.jpg',
+    src: '/youngcouple.jpg',
     alt: 'A couple carrying a dresser into their new home on moving day outside a Chicago brick bungalow',
     caption: 'Every renter deserves to know before they sign.',
   },
   {
-    src: '/neighborhood.jpg',
+    src: '/singlefemale.jpg',
     alt: 'A multigenerational family greeting a smiling neighbor outside a Chicago home',
     caption: 'Built block by block, for Chicago renters.',
   },
   {
-    src: '/chicago-skyline.jpg',
+    src: '/youngwomenandchildren.jpg',
     alt: 'A woman walking toward a Chicago high-rise as movers carry furniture into her new building',
     caption: 'Always free for renters — that never changes.',
   },
