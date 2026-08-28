@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { submitBetaFeedback } from '../api.js'
+import Logo from './Logo.jsx'
 
 const RESPONDENT_TYPES = [
   { value: 'current_renter',       label: 'Current renter' },
@@ -104,7 +105,7 @@ export default function BetaTester() {
       <header className="app-header">
         <div className="header-inner">
           <a href="/" className="brand-link">
-            <img src="/logo.png" alt="Tenant Transparency — Know Before You Lease" className="brand-logo" />
+            <Logo className="brand-logo" />
           </a>
         </div>
       </header>
