@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { submitFoundingCommunityResponse } from '../api.js'
-import ImageLoop from './ImageLoop.jsx'
 import '../support.css'
 
 function sourceFromQuery() {
@@ -39,10 +38,21 @@ export default function FoundingCommunity() {
 
   return (
     <>
-      <section className="support-hero" style={{ marginBottom: 'var(--space-10)' }}>
-        <div className="support-hero-content">
+      <section className="page-hero">
+        <img
+          src="/singlefemale.jpg"
+          alt="A multigenerational family greeting a smiling neighbor outside a Chicago home"
+          className="page-hero-photo"
+        />
+        <div className="page-hero-overlay" />
+        <div className="page-hero-inner">
           <span className="section-eyebrow">Founding Community</span>
           <h1>Report My Landlord was the beginning. Tenant Transparency is the broader solution.</h1>
+        </div>
+      </section>
+
+      <div className="support-page">
+        <div className="subpage-intro">
           <p>
             Report My Landlord started as a place for renters to share
             experiences and hold landlords accountable. As the idea
@@ -58,68 +68,67 @@ export default function FoundingCommunity() {
             we'd love to hear from you.
           </p>
         </div>
-        <ImageLoop />
-      </section>
 
-      {status === 'done' ? (
-        <section style={{ background: 'var(--teal)', borderRadius: 'var(--radius-xl)', padding: 'var(--space-12)', textAlign: 'center' }}>
-          <h2 style={{ color: 'var(--white)' }}>Thank you</h2>
-          <p style={{ color: 'rgba(255,255,255,0.85)' }}>
-            We'll be in touch as Tenant Transparency grows. Feel free to{' '}
-            <a href="/" style={{ color: 'var(--white)', textDecoration: 'underline' }}>explore the platform</a>{' '}
-            in the meantime.
-          </p>
+        {status === 'done' ? (
+          <section style={{ background: 'var(--teal)', borderRadius: 'var(--radius-xl)', padding: 'var(--space-12)', textAlign: 'center' }}>
+            <h2 style={{ color: 'var(--white)' }}>Thank you</h2>
+            <p style={{ color: 'rgba(255,255,255,0.85)' }}>
+              We'll be in touch as Tenant Transparency grows. Feel free to{' '}
+              <a href="/" style={{ color: 'var(--white)', textDecoration: 'underline' }}>explore the platform</a>{' '}
+              in the meantime.
+            </p>
+          </section>
+        ) : (
+          <div className="report-panel">
+            <form className="report-form" onSubmit={handleSubmit} noValidate>
+              <label className="field-label">
+                When you originally joined Report My Landlord, what were you hoping the community would help you do?
+                <textarea rows={3} value={originalJoinReason} onChange={(e) => setOriginalJoinReason(e.target.value)} />
+              </label>
+
+              <label className="field-label">
+                Would a platform like Tenant Transparency be most useful to you before signing a lease, while you're renting, after a problem happens, or throughout the entire rental process?
+                <select value={whenMostUseful} onChange={(e) => setWhenMostUseful(e.target.value)}>
+                  <option value="">Select one</option>
+                  <option value="before_signing">Before signing a lease</option>
+                  <option value="while_renting">While renting</option>
+                  <option value="after_problem">After a problem happens</option>
+                  <option value="throughout">Throughout the entire rental process</option>
+                </select>
+              </label>
+
+              <label className="field-label">
+                Name (optional)
+                <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+              </label>
+
+              <label className="field-label">
+                Email (optional)
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              </label>
+
+              <label className="field-checkbox">
+                <input
+                  type="checkbox"
+                  checked={futureContactOk}
+                  onChange={(e) => setFutureContactOk(e.target.checked)}
+                />
+                I am willing to be contacted for future Tenant Transparency testing, interviews, surveys, or product feedback.
+              </label>
+
+              {status === 'error' && <p className="status-line error">{error}</p>}
+
+              <button type="submit" className="cta-primary" disabled={status === 'loading'} style={{ alignSelf: 'flex-start' }}>
+                {status === 'loading' ? 'Submitting…' : 'Submit'}
+              </button>
+            </form>
+          </div>
+        )}
+
+        <section style={{ textAlign: 'center', marginTop: 'var(--space-12)' }}>
+          <a href="/" className="cta-secondary">Explore Tenant Transparency</a>
         </section>
-      ) : (
-        <div className="report-panel">
-          <form className="report-form" onSubmit={handleSubmit} noValidate>
-            <label className="field-label">
-              When you originally joined Report My Landlord, what were you hoping the community would help you do?
-              <textarea rows={3} value={originalJoinReason} onChange={(e) => setOriginalJoinReason(e.target.value)} />
-            </label>
-
-            <label className="field-label">
-              Would a platform like Tenant Transparency be most useful to you before signing a lease, while you're renting, after a problem happens, or throughout the entire rental process?
-              <select value={whenMostUseful} onChange={(e) => setWhenMostUseful(e.target.value)}>
-                <option value="">Select one</option>
-                <option value="before_signing">Before signing a lease</option>
-                <option value="while_renting">While renting</option>
-                <option value="after_problem">After a problem happens</option>
-                <option value="throughout">Throughout the entire rental process</option>
-              </select>
-            </label>
-
-            <label className="field-label">
-              Name (optional)
-              <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
-            </label>
-
-            <label className="field-label">
-              Email (optional)
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-            </label>
-
-            <label className="field-checkbox">
-              <input
-                type="checkbox"
-                checked={futureContactOk}
-                onChange={(e) => setFutureContactOk(e.target.checked)}
-              />
-              I am willing to be contacted for future Tenant Transparency testing, interviews, surveys, or product feedback.
-            </label>
-
-            {status === 'error' && <p className="status-line error">{error}</p>}
-
-            <button type="submit" className="cta-primary" disabled={status === 'loading'} style={{ alignSelf: 'flex-start' }}>
-              {status === 'loading' ? 'Submitting…' : 'Submit'}
-            </button>
-          </form>
-        </div>
-      )}
-
-      <section style={{ textAlign: 'center', marginTop: 'var(--space-12)' }}>
-        <a href="/" className="cta-secondary">Explore Tenant Transparency</a>
-      </section>
+      </div>
     </>
   )
 }

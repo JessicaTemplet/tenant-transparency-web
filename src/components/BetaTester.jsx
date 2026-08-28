@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { submitBetaFeedback } from '../api.js'
-import ImageLoop from './ImageLoop.jsx'
 import '../support.css'
 
 const RESPONDENT_TYPES = [
@@ -103,24 +102,35 @@ export default function BetaTester() {
 
   return (
     <>
-      {status === 'done' ? (
-        <div className="report-panel">
-          <div className="report-success">
-            <div className="report-success-icon">&#10003;</div>
-            <h1>Thank you</h1>
-            <p>
-              Your feedback has been recorded. This is exactly the kind of
-              honest, unfiltered read we need before opening this up more
-              broadly &mdash; we really appreciate the time.
-            </p>
-          </div>
+      <section className="page-hero">
+        <img
+          src="/youngcouple.jpg"
+          alt="A couple carrying a dresser into their new home on moving day outside a Chicago brick bungalow"
+          className="page-hero-photo"
+        />
+        <div className="page-hero-overlay" />
+        <div className="page-hero-inner">
+          <span className="section-eyebrow">Beta Testing</span>
+          <h1>Help Us Build Tenant Transparency</h1>
         </div>
-      ) : (
-        <>
-          <section className="support-hero" style={{ marginBottom: 'var(--space-10)' }}>
-            <div className="support-hero-content">
-              <span className="section-eyebrow">Beta Testing</span>
-              <h1>Help Us Build Tenant Transparency</h1>
+      </section>
+
+      <div className="support-page">
+        {status === 'done' ? (
+          <div className="report-panel">
+            <div className="report-success">
+              <div className="report-success-icon">&#10003;</div>
+              <h1>Thank you</h1>
+              <p>
+                Your feedback has been recorded. This is exactly the kind of
+                honest, unfiltered read we need before opening this up more
+                broadly &mdash; we really appreciate the time.
+              </p>
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="subpage-intro">
               <p>
                 Tenant Transparency is a renter-focused platform built
                 around one simple idea: renters should be able to know more
@@ -137,194 +147,195 @@ export default function BetaTester() {
                 works, what's confusing, what's missing, and what renters
                 would actually use.
               </p>
-              <div className="report-privacy-note">
-                <span>&#9201;</span>
-                Please spend about five to ten minutes exploring{' '}
-                <a href="/" target="_blank" rel="noopener noreferrer">Tenant Transparency</a>{' '}
-                before filling this out. We're intentionally not giving much
-                direction beyond that &mdash; one of the most important
-                things we want to learn is whether someone who's never heard
-                of Tenant Transparency can figure out what it is, who it's
-                for, and how to use it without us explaining it first.
+              <div className="callout-dark">
+                <span className="callout-dark-icon">&#9201;</span>
+                <p>
+                  Please spend about five to ten minutes exploring{' '}
+                  <a href="/" target="_blank" rel="noopener noreferrer">Tenant Transparency</a>{' '}
+                  before filling this out. We're intentionally not giving much
+                  direction beyond that &mdash; one of the most important
+                  things we want to learn is whether someone who's never heard
+                  of Tenant Transparency can figure out what it is, who it's
+                  for, and how to use it without us explaining it first.
+                </p>
               </div>
             </div>
-            <ImageLoop />
-          </section>
 
-          <div className="report-panel">
-            <form className="report-form" onSubmit={handleSubmit} noValidate>
-              <label className="field-label">
-                Name
-                <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
-              </label>
+            <div className="report-panel">
+              <form className="report-form" onSubmit={handleSubmit} noValidate>
+                <label className="field-label">
+                  Name
+                  <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                </label>
 
-              <label className="field-label">
-                Email address
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-              </label>
+                <label className="field-label">
+                  Email address
+                  <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                </label>
 
-              <div className="field-label">
-                City and state
-                <div style={{ display: 'flex', gap: '12px' }}>
-                  <input type="text" placeholder="City" value={city} onChange={(e) => setCity(e.target.value)} style={{ flex: 1 }} />
-                  <input type="text" placeholder="State" value={state} onChange={(e) => setState(e.target.value)} style={{ width: '100px' }} />
+                <div className="field-label">
+                  City and state
+                  <div style={{ display: 'flex', gap: '12px' }}>
+                    <input type="text" placeholder="City" value={city} onChange={(e) => setCity(e.target.value)} style={{ flex: 1 }} />
+                    <input type="text" placeholder="State" value={state} onChange={(e) => setState(e.target.value)} style={{ width: '100px' }} />
+                  </div>
                 </div>
-              </div>
 
-              <div className="field-label">
-                Which of these describes you?
-                <span className="field-hint">Select all that apply</span>
-                <div className="tag-checkbox-list">
-                  {RESPONDENT_TYPES.map((t) => (
-                    <label key={t.value} className="tag-checkbox">
-                      <input
-                        type="checkbox"
-                        checked={respondentTypes.includes(t.value)}
-                        onChange={() => toggleType(t.value)}
-                      />
-                      {t.label}
-                    </label>
-                  ))}
+                <div className="field-label">
+                  Which of these describes you?
+                  <span className="field-hint">Select all that apply</span>
+                  <div className="tag-checkbox-list">
+                    {RESPONDENT_TYPES.map((t) => (
+                      <label key={t.value} className="tag-checkbox">
+                        <input
+                          type="checkbox"
+                          checked={respondentTypes.includes(t.value)}
+                          onChange={() => toggleType(t.value)}
+                        />
+                        {t.label}
+                      </label>
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              <label className="field-label">
-                After spending a few minutes on Tenant Transparency, how would you describe what the platform does?
-                <textarea rows={3} value={descriptionAfterUse} onChange={(e) => setDescriptionAfterUse(e.target.value)} />
-              </label>
+                <label className="field-label">
+                  After spending a few minutes on Tenant Transparency, how would you describe what the platform does?
+                  <textarea rows={3} value={descriptionAfterUse} onChange={(e) => setDescriptionAfterUse(e.target.value)} />
+                </label>
 
-              <label className="field-label">
-                Was it immediately clear who Tenant Transparency is designed for?
-                <select value={audienceClarity} onChange={(e) => setAudienceClarity(e.target.value)}>
-                  <option value="">Select one</option>
-                  <option value="yes">Yes</option>
-                  <option value="somewhat">Somewhat</option>
-                  <option value="no">No</option>
-                </select>
-              </label>
+                <label className="field-label">
+                  Was it immediately clear who Tenant Transparency is designed for?
+                  <select value={audienceClarity} onChange={(e) => setAudienceClarity(e.target.value)}>
+                    <option value="">Select one</option>
+                    <option value="yes">Yes</option>
+                    <option value="somewhat">Somewhat</option>
+                    <option value="no">No</option>
+                  </select>
+                </label>
 
-              <label className="field-label">
-                What was the first thing you clicked on?
-                <input type="text" value={firstClicked} onChange={(e) => setFirstClicked(e.target.value)} />
-              </label>
+                <label className="field-label">
+                  What was the first thing you clicked on?
+                  <input type="text" value={firstClicked} onChange={(e) => setFirstClicked(e.target.value)} />
+                </label>
 
-              <label className="field-label">
-                Was the website easy to navigate?
-                <select value={easyToNavigate} onChange={(e) => setEasyToNavigate(e.target.value)}>
-                  <option value="">Select one</option>
-                  <option value="yes">Yes</option>
-                  <option value="somewhat">Somewhat</option>
-                  <option value="no">No</option>
-                </select>
-              </label>
+                <label className="field-label">
+                  Was the website easy to navigate?
+                  <select value={easyToNavigate} onChange={(e) => setEasyToNavigate(e.target.value)}>
+                    <option value="">Select one</option>
+                    <option value="yes">Yes</option>
+                    <option value="somewhat">Somewhat</option>
+                    <option value="no">No</option>
+                  </select>
+                </label>
 
-              <label className="field-label">
-                What information would you want to know about a rental property before signing a lease?
-                <textarea rows={3} value={infoWantedBeforeLease} onChange={(e) => setInfoWantedBeforeLease(e.target.value)} />
-              </label>
+                <label className="field-label">
+                  What information would you want to know about a rental property before signing a lease?
+                  <textarea rows={3} value={infoWantedBeforeLease} onChange={(e) => setInfoWantedBeforeLease(e.target.value)} />
+                </label>
 
-              <label className="field-label">
-                Would renter reviews or property reports influence your decision about whether to rent a property?
-                <select value={reviewsInfluenceDecision} onChange={(e) => setReviewsInfluenceDecision(e.target.value)}>
-                  <option value="">Select one</option>
-                  <option value="yes">Yes</option>
-                  <option value="somewhat">Somewhat</option>
-                  <option value="no">No</option>
-                </select>
-              </label>
+                <label className="field-label">
+                  Would renter reviews or property reports influence your decision about whether to rent a property?
+                  <select value={reviewsInfluenceDecision} onChange={(e) => setReviewsInfluenceDecision(e.target.value)}>
+                    <option value="">Select one</option>
+                    <option value="yes">Yes</option>
+                    <option value="somewhat">Somewhat</option>
+                    <option value="no">No</option>
+                  </select>
+                </label>
 
-              <label className="field-label">
-                What would make you trust a renter review or property report?
-                <textarea rows={3} value={trustFactors} onChange={(e) => setTrustFactors(e.target.value)} />
-              </label>
+                <label className="field-label">
+                  What would make you trust a renter review or property report?
+                  <textarea rows={3} value={trustFactors} onChange={(e) => setTrustFactors(e.target.value)} />
+                </label>
 
-              <label className="field-label">
-                Did you visit the Resource Center?
-                <select value={visitedResourceCenter} onChange={(e) => setVisitedResourceCenter(e.target.value)}>
-                  <option value="">Select one</option>
-                  <option value="yes">Yes</option>
-                  <option value="no">No</option>
-                </select>
-              </label>
+                <label className="field-label">
+                  Did you visit the Resource Center?
+                  <select value={visitedResourceCenter} onChange={(e) => setVisitedResourceCenter(e.target.value)}>
+                    <option value="">Select one</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </label>
 
-              <label className="field-label">
-                Did you use any of the renter tools or resources?
-                <select value={usedTools} onChange={(e) => setUsedTools(e.target.value)}>
-                  <option value="">Select one</option>
-                  <option value="yes">Yes</option>
-                  <option value="no">No</option>
-                </select>
-              </label>
+                <label className="field-label">
+                  Did you use any of the renter tools or resources?
+                  <select value={usedTools} onChange={(e) => setUsedTools(e.target.value)}>
+                    <option value="">Select one</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </label>
 
-              <label className="field-label">
-                Which resource or tool was most useful to you?
-                <input type="text" value={mostUsefulResource} onChange={(e) => setMostUsefulResource(e.target.value)} />
-              </label>
+                <label className="field-label">
+                  Which resource or tool was most useful to you?
+                  <input type="text" value={mostUsefulResource} onChange={(e) => setMostUsefulResource(e.target.value)} />
+                </label>
 
-              <label className="field-label">
-                What information or feature felt missing?
-                <textarea rows={3} value={missingFeature} onChange={(e) => setMissingFeature(e.target.value)} />
-              </label>
+                <label className="field-label">
+                  What information or feature felt missing?
+                  <textarea rows={3} value={missingFeature} onChange={(e) => setMissingFeature(e.target.value)} />
+                </label>
 
-              <label className="field-label">
-                Was anything confusing or difficult to use?
-                <textarea rows={3} value={confusingExperience} onChange={(e) => setConfusingExperience(e.target.value)} />
-              </label>
+                <label className="field-label">
+                  Was anything confusing or difficult to use?
+                  <textarea rows={3} value={confusingExperience} onChange={(e) => setConfusingExperience(e.target.value)} />
+                </label>
 
-              <label className="field-label">
-                Was there anything that made you hesitant to create an account or provide information?
-                <textarea rows={3} value={accountHesitation} onChange={(e) => setAccountHesitation(e.target.value)} />
-              </label>
+                <label className="field-label">
+                  Was there anything that made you hesitant to create an account or provide information?
+                  <textarea rows={3} value={accountHesitation} onChange={(e) => setAccountHesitation(e.target.value)} />
+                </label>
 
-              <label className="field-label">
-                Would you use Tenant Transparency before signing a lease?
-                <select value={wouldUseBeforeLease} onChange={(e) => setWouldUseBeforeLease(e.target.value)}>
-                  <option value="">Select one</option>
-                  <option value="yes">Yes</option>
-                  <option value="maybe">Maybe</option>
-                  <option value="no">No</option>
-                </select>
-              </label>
+                <label className="field-label">
+                  Would you use Tenant Transparency before signing a lease?
+                  <select value={wouldUseBeforeLease} onChange={(e) => setWouldUseBeforeLease(e.target.value)}>
+                    <option value="">Select one</option>
+                    <option value="yes">Yes</option>
+                    <option value="maybe">Maybe</option>
+                    <option value="no">No</option>
+                  </select>
+                </label>
 
-              <label className="field-label">
-                How likely are you to recommend Tenant Transparency to another renter? (1&ndash;10)
-                <input
-                  type="number"
-                  min="1"
-                  max="10"
-                  value={recommendScore}
-                  onChange={(e) => setRecommendScore(e.target.value)}
-                />
-              </label>
+                <label className="field-label">
+                  How likely are you to recommend Tenant Transparency to another renter? (1&ndash;10)
+                  <input
+                    type="number"
+                    min="1"
+                    max="10"
+                    value={recommendScore}
+                    onChange={(e) => setRecommendScore(e.target.value)}
+                  />
+                </label>
 
-              <label className="field-label">
-                What is the one feature you would most like us to add?
-                <textarea rows={3} value={featureRequest} onChange={(e) => setFeatureRequest(e.target.value)} />
-              </label>
+                <label className="field-label">
+                  What is the one feature you would most like us to add?
+                  <textarea rows={3} value={featureRequest} onChange={(e) => setFeatureRequest(e.target.value)} />
+                </label>
 
-              <label className="field-label">
-                What else do you believe renters should be able to know before signing a lease?
-                <textarea rows={3} value={renterKnowledgeWishlist} onChange={(e) => setRenterKnowledgeWishlist(e.target.value)} />
-              </label>
+                <label className="field-label">
+                  What else do you believe renters should be able to know before signing a lease?
+                  <textarea rows={3} value={renterKnowledgeWishlist} onChange={(e) => setRenterKnowledgeWishlist(e.target.value)} />
+                </label>
 
-              <label className="field-checkbox">
-                <input
-                  type="checkbox"
-                  checked={futureContactOk}
-                  onChange={(e) => setFutureContactOk(e.target.checked)}
-                />
-                I am willing to be contacted for future Tenant Transparency testing, interviews, surveys, or product feedback.
-              </label>
+                <label className="field-checkbox">
+                  <input
+                    type="checkbox"
+                    checked={futureContactOk}
+                    onChange={(e) => setFutureContactOk(e.target.checked)}
+                  />
+                  I am willing to be contacted for future Tenant Transparency testing, interviews, surveys, or product feedback.
+                </label>
 
-              {status === 'error' && <p className="status-line error">{error}</p>}
+                {status === 'error' && <p className="status-line error">{error}</p>}
 
-              <button type="submit" className="cta-primary" disabled={status === 'loading'} style={{ alignSelf: 'flex-start' }}>
-                {status === 'loading' ? 'Submitting…' : 'Submit Feedback'}
-              </button>
-            </form>
-          </div>
-        </>
-      )}
+                <button type="submit" className="cta-primary" disabled={status === 'loading'} style={{ alignSelf: 'flex-start' }}>
+                  {status === 'loading' ? 'Submitting…' : 'Submit Feedback'}
+                </button>
+              </form>
+            </div>
+          </>
+        )}
+      </div>
     </>
   )
 }

@@ -4,30 +4,120 @@
   padding: var(--space-16) var(--space-6);
 }
 
-.support-hero {
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: var(--space-12);
-  align-items: center;
+/* Full-bleed photo banner used at the top of standalone pages (Beta,
+   Founding Community, Support TT) — same visual language as the homepage
+   hero (full photo, dark gradient, headline over the top), scaled down
+   for a secondary page instead of the primary landing hero. */
+.page-hero {
+  position: relative;
+  min-height: 340px;
+  max-width: 1440px;
+  margin: 0 auto var(--space-12);
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
 }
 
-@media (max-width: 860px) {
-  .support-hero {
-    grid-template-columns: 1fr;
+.page-hero-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.page-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(11, 20, 18, 0.88) 0%,
+    rgba(11, 20, 18, 0.5) 55%,
+    rgba(11, 20, 18, 0.12) 100%
+  );
+}
+
+.page-hero-inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  /* Matches .support-page's max-width + side padding exactly, so the
+     headline lines up with the body copy underneath it instead of using
+     the wider section-pad-x inset the rest of the site uses. */
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: var(--space-10) var(--space-6) var(--space-8);
+}
+
+.page-hero-inner .section-eyebrow {
+  color: var(--teal-light);
+}
+
+.page-hero-inner h1 {
+  color: var(--white);
+  font-size: var(--text-3xl);
+  max-width: 720px;
+  margin: var(--space-3) 0 0;
+}
+
+@media (max-width: 680px) {
+  .page-hero {
+    min-height: 220px;
+    margin-bottom: var(--space-8);
+  }
+
+  .page-hero-inner {
+    padding: var(--space-6);
+  }
+
+  .page-hero-inner h1 {
+    font-size: var(--text-2xl);
   }
 }
 
-.support-hero-content h1 {
-  font-size: var(--text-2xl);
-  margin: var(--space-3) 0 var(--space-6);
-  color: var(--ink);
+/* Intro copy that follows a .page-hero, before the form/callout content */
+.subpage-intro {
+  max-width: 720px;
+  margin: 0 auto var(--space-8);
 }
 
-.support-hero-content p {
+.subpage-intro p {
   color: var(--ink-soft);
   font-size: var(--text-md);
   line-height: 1.6;
   margin-bottom: var(--space-4);
+}
+
+/* Dark-teal callout — matches the "Get in touch" box on the About page.
+   Used for instructional/notice copy that needs more visual weight than
+   .report-privacy-note's light note treatment. */
+.callout-dark {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  background: var(--teal);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin-top: var(--space-6);
+}
+
+.callout-dark-icon {
+  font-size: 1.1rem;
+  line-height: 1.4;
+  flex-shrink: 0;
+}
+
+.callout-dark p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+.callout-dark a {
+  color: var(--white);
+  text-decoration: underline;
 }
 
 .support-cta-wrap {
@@ -54,57 +144,5 @@
   line-height: 1.6;
 }
 
-.image-loop {
-  position: relative;
-  aspect-ratio: 4 / 5;
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  border: 1px solid var(--border);
-}
-
-.image-loop-slide {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  opacity: 0;
-  transition: opacity 1.2s ease;
-}
-
-.image-loop-slide.active {
-  opacity: 1;
-}
-
-.image-loop-caption {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: var(--space-6) var(--space-5);
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0));
-  color: var(--white);
-  font-size: var(--text-md);
-  font-weight: 600;
-}
-
-.image-loop-dots {
-  position: absolute;
-  top: var(--space-4);
-  right: var(--space-4);
-  display: flex;
-  gap: 6px;
-}
-
-.image-loop-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  border: none;
-  background: rgba(255, 255, 255, 0.5);
-  cursor: pointer;
-  padding: 0;
-}
-
-.image-loop-dot.active {
-  background: var(--white);
-}
+/* image-loop-* rules removed — the ImageLoop carousel is no longer used;
+   Beta, Founding Community, and Support TT now use .page-hero instead. */

@@ -63,8 +63,8 @@ export default function App() {
         <Route path="/map" element={<SiteChrome hideFooter><NeighborhoodMap /></SiteChrome>} />
         <Route path="/privacy" element={<SiteChrome><PrivacyPolicy /></SiteChrome>} />
         <Route path="/terms" element={<SiteChrome><TermsOfUse /></SiteChrome>} />
-        <Route path="/beta" element={<SiteChrome><div className="page-content"><BetaTester /></div></SiteChrome>} />
-        <Route path="/founding-community" element={<SiteChrome><div className="page-content"><FoundingCommunity /></div></SiteChrome>} />
+        <Route path="/beta" element={<SiteChrome><BetaTester /></SiteChrome>} />
+        <Route path="/founding-community" element={<SiteChrome><FoundingCommunity /></SiteChrome>} />
         <Route
           path="/admin"
           element={

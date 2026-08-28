@@ -269,6 +269,13 @@ img { display: block; max-width: 100%; }
   background: var(--white);
   border-bottom: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
+  /* Logo canvas renders at 130px tall (hardcoded in Logo.jsx) but
+     .header-inner is 84px, so centering pushes ~23px of the house
+     peak above the row. Header sits flush at the top of the page,
+     so that overflow was landing above the viewport edge and
+     getting clipped. This pulls the whole row down far enough to
+     keep it in view. */
+  padding-top: 28px;
 }
 
 /* Keeps in-page anchor targets (e.g. /about#contact, /#housing-news) from
@@ -2088,6 +2095,12 @@ section[id] {
 }
 
 @media (max-width: 680px) {
+  .app-header {
+    /* header-inner drops to 68px here, so the 130px logo canvas
+       overflows the row by ~31px instead of 23px */
+    padding-top: 34px;
+  }
+
   .header-inner {
     padding: 0 var(--space-5);
     height: 68px;

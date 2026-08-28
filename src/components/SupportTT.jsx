@@ -1,4 +1,3 @@
-import ImageLoop from './ImageLoop.jsx'
 import '../support.css'
 
 // TODO(Jessica): once Sheenita's Stripe account exists, create a Payment Link
@@ -9,11 +8,22 @@ const STRIPE_PAYMENT_LINK = ''
 
 export default function SupportTT() {
   return (
-    <div className="support-page">
-      <section className="support-hero">
-        <div className="support-hero-content">
+    <>
+      <section className="page-hero">
+        <img
+          src="/youngwomenandchildren.jpg"
+          alt="A woman walking toward a Chicago high-rise as movers carry furniture into her new building"
+          className="page-hero-photo"
+        />
+        <div className="page-hero-overlay" />
+        <div className="page-hero-inner">
           <span className="section-eyebrow">Support TT</span>
           <h1>Help Build a More Transparent Rental Market</h1>
+        </div>
+      </section>
+
+      <div className="support-page">
+        <div className="subpage-intro">
           <p>
             Tenant Transparency is building tools and resources designed to
             help renters access better information, understand their options,
@@ -52,9 +62,7 @@ export default function SupportTT() {
             </p>
           </div>
         </div>
-
-        <ImageLoop />
-      </section>
-    </div>
+      </div>
+    </>
   )
 }
