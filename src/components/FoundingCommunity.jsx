@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { submitFoundingCommunityResponse } from '../api.js'
+import Logo from './Logo.jsx'
 
 function sourceFromQuery() {
   if (typeof window === 'undefined') return 'nextdoor_founding_community'
@@ -40,7 +41,7 @@ export default function FoundingCommunity() {
       <header className="app-header">
         <div className="header-inner">
           <a href="/" className="brand-link">
-            <img src="/logo.png" alt="Tenant Transparency — Know Before You Lease" className="brand-logo" />
+            <Logo className="brand-logo" />
           </a>
         </div>
       </header>
