@@ -100,15 +100,15 @@ export default function SiteChrome({ children, hideFooter = false }) {
               <Link to="/search">Search Properties</Link>
               <Link to="/resources">Resource Center</Link>
               <Link to="/report-issue">Report a Concern</Link>
-              <a href={WAITLIST_URL} target="_blank" rel="noopener noreferrer">Join the Waitlist</a>
+              <a href="mailto:info@tenanttransparency.com">Join the Waitlist</a>
             </div>
             <div className="footer-col">
               <h4>Company</h4>
               <Link to="/about">About</Link>
               <a href="mailto:info@tenanttransparency.com">Contact</a>
-              <a href={WAITLIST_URL} target="_blank" rel="noopener noreferrer">Partners</a>
-              <a href={WAITLIST_URL} target="_blank" rel="noopener noreferrer">Housing News</a>
-              <a href={WAITLIST_URL} target="_blank" rel="noopener noreferrer">Research</a>
+              <a href="mailto:info@tenanttransparency.com">Partners</a>
+              <a href="/#housing-news">Housing News</a>
+              <a href="/#research-data">Research</a>
             </div>
           </div>
           <div className="footer-bottom">
