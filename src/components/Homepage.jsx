@@ -125,7 +125,7 @@ export default function Homepage() {
       <section className="hero">
         <div className="hero-image-side">
           <img
-            src="/hero-original.jpg"
+            src="/hero-original.png"
             alt="A family and community members gathered around a table outside a Chicago brick apartment building, smiling as a woman signs a lease"
             className="hero-photo"
           />
@@ -374,7 +374,7 @@ export default function Homepage() {
       <section className="neighborhood-section" id="neighborhoods">
         <div className="neighborhood-section-inner">
           <img
-            src="/neighborhood-original.jpg"
+            src="/neighborhood-original.png"
             alt="A quiet Chicago residential street at golden hour with brick three-flats, mature trees, and a bicycle leaning against a fence"
             className="neighborhood-photo"
           />
