@@ -8,6 +8,8 @@ import ReportIssue from './components/ReportIssue.jsx'
 import ResourceCenter from './components/ResourceCenter.jsx'
 import About from './components/About.jsx'
 import SupportTT from './components/SupportTT.jsx'
+import BetaTester from './components/BetaTester.jsx'
+import FoundingCommunity from './components/FoundingCommunity.jsx'
 import NeighborhoodMap from './components/NeighborhoodMap.jsx'
 import PrivacyPolicy from './components/PrivacyPolicy.jsx'
 import TermsOfUse from './components/TermsOfUse.jsx'
@@ -25,6 +27,9 @@ function RenterSearchFlow() {
 
 // "/" and all public-facing routes get full site chrome (nav + footer).
 // "/admin" is deliberately bare — it's a back-office tool, not a renter page.
+// "/beta" and "/founding-community" are also deliberately bare (own minimal
+// header, no SiteChrome) — direct-link-only pages Sheenita asked NOT to put
+// in the main navigation.
 export default function App() {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
@@ -38,6 +43,8 @@ export default function App() {
         <Route path="/map" element={<SiteChrome hideFooter><NeighborhoodMap /></SiteChrome>} />
         <Route path="/privacy" element={<SiteChrome><PrivacyPolicy /></SiteChrome>} />
         <Route path="/terms" element={<SiteChrome><TermsOfUse /></SiteChrome>} />
+        <Route path="/beta" element={<BetaTester />} />
+        <Route path="/founding-community" element={<FoundingCommunity />} />
         <Route
           path="/admin"
           element={
