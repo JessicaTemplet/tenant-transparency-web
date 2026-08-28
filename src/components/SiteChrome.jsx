@@ -33,9 +33,7 @@ export default function SiteChrome({ children, hideFooter = false }) {
             <Link to="/map">Neighborhoods</Link>
             <Link to="/resources">Resource Center</Link>
             <Link to="/about">About</Link>
-            <a href={WAITLIST_URL} target="_blank" rel="noopener noreferrer">
-              Get Involved
-            </a>
+            <Link to="/support">Get Involved</Link>
           </nav>
 
           <div className="header-right">
@@ -71,9 +69,7 @@ export default function SiteChrome({ children, hideFooter = false }) {
             <Link to="/resources" onClick={() => setMenuOpen(false)}>Resource Center</Link>
             <Link to="/about" onClick={() => setMenuOpen(false)}>About</Link>
             <Link to="/report-issue" onClick={() => setMenuOpen(false)}>Report a Concern</Link>
-            <a href={WAITLIST_URL} target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)}>
-              Get Involved
-            </a>
+            <Link to="/support" onClick={() => setMenuOpen(false)}>Get Involved</Link>
             <Link to="/privacy" onClick={() => setMenuOpen(false)}>Privacy Policy</Link>
             <Link to="/terms" onClick={() => setMenuOpen(false)}>Terms of Use</Link>
           </nav>
@@ -100,6 +96,7 @@ export default function SiteChrome({ children, hideFooter = false }) {
               <Link to="/search">Search Properties</Link>
               <Link to="/resources">Resource Center</Link>
               <Link to="/report-issue">Report a Concern</Link>
+              <Link to="/support">Support TT</Link>
               <a href="mailto:info@tenanttransparency.com">Join the Waitlist</a>
             </div>
             <div className="footer-col">
