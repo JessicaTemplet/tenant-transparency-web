@@ -20,6 +20,39 @@ const RESOLUTION_STATUSES = [
   { value: 'ongoing',           label: 'Ongoing' },
 ]
 
+const HOUSING_ASSISTANCE_TYPES = [
+  { value: 'market_rate',       label: 'Market-rate renter' },
+  { value: 'hcv_section8',      label: 'Housing Choice Voucher / Section 8' },
+  { value: 'cha_pbv',           label: 'CHA Project-Based Voucher' },
+  { value: 'public_housing',    label: 'Public housing resident' },
+  { value: 'other_assistance',  label: 'Other housing assistance' },
+  { value: 'prefer_not_to_say', label: 'Prefer not to say' },
+]
+
+// Shown only when housing_assistance_type is one of these — market-rate
+// renters and "prefer not to say" never see this sub-form, per Sheenita's
+// request to not lengthen the experience for renters it doesn't apply to.
+const ASSISTED_TYPES = ['hcv_section8', 'cha_pbv', 'public_housing', 'other_assistance']
+
+const ASSISTANCE_QUESTIONS = [
+  { key: 'assistanceResponsive',                 label: 'Was the landlord or property manager responsive during the CHA or voucher process?' },
+  { key: 'assistanceInspectionDelays',           label: 'Were there delays related to inspections, paperwork, or unit approval?' },
+  { key: 'assistanceMaintainedAfterInspection',  label: 'Did management continue maintaining the property after the unit passed inspection?' },
+  { key: 'assistanceRepairsCompleted',           label: 'Were repairs completed when residents reported problems?' },
+  { key: 'assistanceChargesExplained',           label: 'Were rent, deposits, fees, utilities, and other charges clearly explained?' },
+  { key: 'assistanceUnexplainedCharges',         label: 'Were you ever asked to pay charges you did not understand or believe were outside your required tenant portion?' },
+  { key: 'assistanceCommunicatedClearly',        label: 'Did management communicate clearly with you about CHA or voucher-related issues?' },
+  { key: 'assistanceTreatedDifferently',         label: 'Did you feel you were treated differently because you used housing assistance?' },
+  { key: 'assistanceTransferBarriers',           label: 'Were there barriers when attempting to transfer, move, or resolve a housing issue?' },
+  { key: 'assistanceWouldChooseAgain',           label: 'If you knew then what you know now, would you still have chosen this property?' },
+]
+
+function triToBool(value) {
+  if (value === 'yes') return true
+  if (value === 'no') return false
+  return null
+}
+
 export default function ReportIssue() {
   const [submittedAddress, setSubmittedAddress] = useState('')
 
@@ -32,6 +65,10 @@ export default function ReportIssue() {
   const [resolutionStatus, setResolutionStatus] = useState('unresolved')
   const [wouldRentAgain, setWouldRentAgain] = useState('')
 
+  const [housingAssistanceType, setHousingAssistanceType] = useState('market_rate')
+  const [assistanceAnswers, setAssistanceAnswers] = useState({})
+  const [assistanceAdvice, setAssistanceAdvice] = useState('')
+
   const [submitStatus, setSubmitStatus] = useState('idle')
   const [submitError, setSubmitError] = useState('')
   // 'resolved' | 'pending_address' — set after a successful submit
@@ -42,6 +79,12 @@ export default function ReportIssue() {
       prev.includes(value) ? prev.filter((t) => t !== value) : [...prev, value]
     )
   }
+
+  function setAssistanceAnswer(key, value) {
+    setAssistanceAnswers((prev) => ({ ...prev, [key]: value }))
+  }
+
+  const showAssistanceQuestions = ASSISTED_TYPES.includes(housingAssistanceType)
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -86,6 +129,18 @@ export default function ReportIssue() {
         resolution_status: resolutionStatus,
         would_rent_again: wouldRentAgain === '' ? null : wouldRentAgain === 'yes',
         evidence_file_refs: null,
+        housing_assistance_type: housingAssistanceType,
+        assistance_responsive: showAssistanceQuestions ? triToBool(assistanceAnswers.assistanceResponsive) : null,
+        assistance_inspection_delays: showAssistanceQuestions ? triToBool(assistanceAnswers.assistanceInspectionDelays) : null,
+        assistance_maintained_after_inspection: showAssistanceQuestions ? triToBool(assistanceAnswers.assistanceMaintainedAfterInspection) : null,
+        assistance_repairs_completed: showAssistanceQuestions ? triToBool(assistanceAnswers.assistanceRepairsCompleted) : null,
+        assistance_charges_explained: showAssistanceQuestions ? triToBool(assistanceAnswers.assistanceChargesExplained) : null,
+        assistance_unexplained_charges: showAssistanceQuestions ? triToBool(assistanceAnswers.assistanceUnexplainedCharges) : null,
+        assistance_communicated_clearly: showAssistanceQuestions ? triToBool(assistanceAnswers.assistanceCommunicatedClearly) : null,
+        assistance_treated_differently: showAssistanceQuestions ? triToBool(assistanceAnswers.assistanceTreatedDifferently) : null,
+        assistance_transfer_barriers: showAssistanceQuestions ? triToBool(assistanceAnswers.assistanceTransferBarriers) : null,
+        assistance_would_choose_again: showAssistanceQuestions ? triToBool(assistanceAnswers.assistanceWouldChooseAgain) : null,
+        assistance_advice: showAssistanceQuestions && assistanceAdvice.trim() ? assistanceAdvice.trim() : null,
       })
       // 201 = address matched a known property; 202 = saved but pending
       setConfirmationType(result._status === 202 ? 'pending_address' : 'resolved')
@@ -213,7 +268,7 @@ export default function ReportIssue() {
           <span className="field-hint">
             Minimum 50 characters &mdash; {description.trim().length < 50
               ? `${50 - description.trim().length} more needed`
-              : '\u2713 good to go'}
+              : '✓ good to go'}
           </span>
           <textarea
             rows={6}
@@ -279,6 +334,52 @@ export default function ReportIssue() {
           </label>
         )}
 
+        <label className="field-label">
+          Is this a market-rate rental, or are you navigating housing assistance?
+          <span className="field-hint">Optional &mdash; helps us understand assisted-housing experiences separately</span>
+          <select
+            value={housingAssistanceType}
+            onChange={(e) => setHousingAssistanceType(e.target.value)}
+          >
+            {HOUSING_ASSISTANCE_TYPES.map((h) => (
+              <option key={h.value} value={h.value}>{h.label}</option>
+            ))}
+          </select>
+        </label>
+
+        {showAssistanceQuestions && (
+          <div className="field-label">
+            A few more questions about your experience
+            <span className="field-hint">
+              These help us understand what renting with CHA, a voucher, or
+              other assistance is actually like at this property &mdash; all optional.
+            </span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '8px' }}>
+              {ASSISTANCE_QUESTIONS.map((q) => (
+                <label key={q.key} className="field-label" style={{ fontWeight: 400 }}>
+                  {q.label}
+                  <select
+                    value={assistanceAnswers[q.key] || ''}
+                    onChange={(e) => setAssistanceAnswer(q.key, e.target.value)}
+                  >
+                    <option value="">Prefer not to say</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </label>
+              ))}
+              <label className="field-label" style={{ fontWeight: 400 }}>
+                What do you wish another CHA or voucher renter knew before leasing here?
+                <textarea
+                  rows={3}
+                  value={assistanceAdvice}
+                  onChange={(e) => setAssistanceAdvice(e.target.value)}
+                />
+              </label>
+            </div>
+          </div>
+        )}
+
         {submitStatus === 'error' && (
           <p className="status-line error">{submitError}</p>
         )}
@@ -289,7 +390,7 @@ export default function ReportIssue() {
           disabled={submitStatus === 'loading'}
           style={{ alignSelf: 'flex-start' }}
         >
-          {submitStatus === 'loading' ? 'Submitting\u2026' : 'Submit Report'}
+          {submitStatus === 'loading' ? 'Submitting…' : 'Submit Report'}
         </button>
 
         <p className="report-disclaimer">
