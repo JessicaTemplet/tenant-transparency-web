@@ -125,8 +125,8 @@ export default function Homepage() {
       <section className="hero">
         <div className="hero-image-side">
           <img
-            src="/signinglease.png"
-            alt="A family and community members gathered around a table outside a Chicago brick apartment building, smiling as a woman signs a lease"
+            src="/signinglease.jpg"
+            alt="A couple carrying a dresser into their new home, moving boxes lined up outside a Chicago brick bungalow"
             className="hero-photo"
           />
           <div className="hero-image-overlay" />
@@ -374,8 +374,8 @@ export default function Homepage() {
       <section className="neighborhood-section" id="neighborhoods">
         <div className="neighborhood-section-inner">
           <img
-            src="/neighborhood.png"
-            alt="A quiet Chicago residential street at golden hour with brick three-flats, mature trees, and a bicycle leaning against a fence"
+            src="/neighborhood.jpg"
+            alt="A multigenerational family greeting a smiling neighbor outside a Chicago home, with kids playing on the sidewalk nearby"
             className="neighborhood-photo"
           />
           <div className="neighborhood-content">
