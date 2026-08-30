@@ -15,12 +15,12 @@ const FUNDS = [
 ]
 
 const s = {
-  hero: { position: 'relative', minHeight: 340, display: 'flex', alignItems: 'flex-end', background: NAVY },
-  heroPhoto: { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.42 },
-  heroOverlay: { position: 'absolute', inset: 0, background: 'linear-gradient(0deg,rgba(14,37,64,.94) 0%,rgba(14,37,64,.62) 55%,rgba(14,37,64,.38) 100%)' },
+  hero: { position: 'relative', minHeight: 340, display: 'flex', alignItems: 'flex-end', background: '#0b1412' },
+  heroPhoto: { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 1 },
+  heroOverlay: { position: 'absolute', inset: 0, background: 'linear-gradient(0deg,rgba(11,20,18,.95) 0%,rgba(11,20,18,.82) 45%,rgba(11,20,18,.6) 100%)' },
   heroInner: { position: 'relative', padding: '64px 56px 48px', maxWidth: 820, color: '#fff' },
-  eyebrow: { font: "700 12px 'Inter',sans-serif", letterSpacing: '.14em', textTransform: 'uppercase', color: '#f9a86a', marginBottom: 16 },
-  h1: { font: "700 46px/1.1 'Archivo','Inter',sans-serif", letterSpacing: '-.02em', margin: 0 },
+  eyebrow: { font: "700 12px 'Inter',sans-serif", letterSpacing: '.14em', textTransform: 'uppercase', color: '#e6f4f1', marginBottom: 16 },
+  h1: { font: "700 46px/1.1 'Lora',Georgia,serif", letterSpacing: '-.01em', margin: 0 },
   page: { maxWidth: 1000, margin: '0 auto', padding: '56px 56px 88px' },
   grid: { display: 'grid', gridTemplateColumns: '1.1fr .9fr', gap: 48, alignItems: 'start' },
   lead: { font: "400 19px/1.65 'Inter',sans-serif", color: NAVY_TEXT },
